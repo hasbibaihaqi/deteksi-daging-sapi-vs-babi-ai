@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Analisa – Meat Classifier</title>
+    <meta name="description" content="Hasil deteksi jenis daging oleh AI.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Animated background -->
+    <div class="bg-canvas">
+        <div class="orb orb-1 {% if meat_type == 'sapi' %}orb-fresh{% else %}orb-spoiled{% endif %}"></div>
+        <div class="orb orb-2 {% if meat_type == 'sapi' %}orb-fresh-2{% else %}orb-spoiled-2{% endif %}"></div>
+        <div class="orb orb-3"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <div class="page-wrapper result-page">
+        <!-- Header -->
+        <header class="hero result-hero">
+            <div class="badge {% if meat_type == 'sapi' %}badge-fresh{% else %}badge-spoiled{% endif %}">
+                <span class="badge-dot"></span>
+                Analisa Selesai
+            </div>
+            <h1>Hasil <span class="gradient-text">Deteksi</span></h1>
+        </header>
+
+        <!-- Result Grid -->
+        <main class="result-grid">
+            <!-- Image card -->
+            <div class="card image-card">
+                <div class="card-label">Gambar yang Dianalisa</div>
+                <div class="img-frame">
+                    <img src="/{{ image_url }}" alt="Daging yang dianalisa">
+                </div>
+            </div>
+
+            <!-- Analysis card -->
+            <div class="card analysis-card {% if meat_type == 'sapi' %}card-fresh{% else %}card-spoiled{% endif %}">
+                <!-- Status icon -->
+                <div class="status-circle {% if meat_type == 'sapi' %}circle-fresh{% else %}circle-spoiled{% endif %}">
+                    {% if meat_type == 'sapi' %}
+                    <!-- Checkmark -->
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 6L9 17l-5-5"/>
+                    </svg>
+                    {% else %}
+                    <!-- Warning -->
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                        <line x1="12" y1="9" x2="12" y2="13"/>
+                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
+                    {% endif %}
+                </div>
+
+                <!-- Main verdict -->
+                <div class="verdict">
+                    <p class="verdict-label">Jenis Daging</p>
+                    <h2 class="verdict-result {% if meat_type == 'sapi' %}text-fresh{% else %}text-spoiled{% endif %}">
+                        {{ result }}
+                    </h2>
+                    <p class="verdict-sub">
+                        {% if meat_type == 'sapi' %}
+                        ✅ Gambar dianalisa sebagai <strong>Daging Sapi</strong>.
+                        {% elif meat_type == 'babi' %}
+                        ⚠️ Gambar dianalisa sebagai <strong>Daging Babi</strong>.
+                        {% else %}
+                        Menunggu model dilatih.
+                        {% endif %}
+                    </p>
+                </div>
+
+                <!-- Confidence -->
+                <div class="confidence-wrap">
+                    <div class="conf-header">
+                        <span class="conf-label">Tingkat Keyakinan AI</span>
+                        <span class="conf-value {% if meat_type == 'sapi' %}text-fresh{% else %}text-spoiled{% endif %}">{{ confidence }}%</span>
+                    </div>
+                    <div class="conf-track">
+                        <div class="conf-fill {% if meat_type == 'sapi' %}fill-fresh{% else %}fill-spoiled{% endif %}"
+                             style="--target-width: {{ confidence }}%"></div>
+                    </div>
+                    <p class="conf-desc">
+                        {% if confidence|float >= 85 %}
+                        Model sangat yakin dengan hasil ini.
+                        {% elif confidence|float >= 70 %}
+                        Model cukup yakin dengan hasil ini.
+                        {% else %}
+                        Pertimbangkan untuk mengecek ulang secara manual.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <a href="/" class="btn-primary btn-back">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+                Analisa Gambar Lain
+            </a>
+        </main>
+
+        <footer class="page-footer">Dibuat dengan ❤️ untuk keamanan pangan Indonesia</footer>
+    </div>
+
+    <script>
+        // Animate confidence bar on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const fill = document.querySelector('.conf-fill');
+            if (fill) {
+                setTimeout(() => {
+                    fill.style.width = fill.style.getPropertyValue('--target-width') ||
+                                       getComputedStyle(fill).getPropertyValue('--target-width');
+                    fill.classList.add('animated');
+                }, 400);
+            }
+        });
+    </script>
+</body>
+</html>

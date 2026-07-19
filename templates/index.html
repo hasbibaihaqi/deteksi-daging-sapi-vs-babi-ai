@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meat Classifier – Deteksi Sapi & Babi</title>
+    <meta name="description" content="Deteksi jenis daging sapi dan babi secara instan menggunakan kecerdasan buatan.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Animated background -->
+    <div class="bg-canvas">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <div class="page-wrapper">
+        <!-- Hero Section -->
+        <header class="hero">
+            <div class="badge">
+                <span class="badge-dot"></span>
+                AI-Powered Detection
+            </div>
+            <h1>Meat <span class="gradient-text">Classifier</span></h1>
+            <p class="hero-subtitle">
+                Upload foto daging untuk mengetahui apakah itu<br>
+                daging sapi atau daging babi secara instan menggunakan AI.
+            </p>
+        </header>
+
+        <!-- Upload Card -->
+        <main class="card upload-card" id="main-card">
+            <form id="upload-form" action="/predict" method="POST" enctype="multipart/form-data">
+                <!-- Drop Zone -->
+                <div class="drop-zone" id="drop-zone" role="button" tabindex="0" aria-label="Area unggah gambar">
+                    <!-- Default state -->
+                    <div class="dz-default" id="dz-default">
+                        <div class="dz-icon-wrap">
+                            <svg class="dz-icon" viewBox="0 0 64 64" fill="none">
+                                <circle cx="32" cy="32" r="31" stroke="currentColor" stroke-width="2" stroke-dasharray="6 4" opacity=".3"/>
+                                <path d="M32 20v16M24 28l8-8 8 8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <rect x="18" y="42" width="28" height="4" rx="2" fill="currentColor" opacity=".2"/>
+                            </svg>
+                        </div>
+                        <p class="dz-title">Seret & lepas gambar di sini</p>
+                        <p class="dz-sub">atau <span class="link-text">pilih dari perangkat</span></p>
+                        <p class="dz-hint">JPG, PNG &nbsp;•&nbsp; Maks. 16 MB</p>
+                    </div>
+
+                    <!-- Preview state -->
+                    <div class="dz-preview" id="dz-preview" style="display:none">
+                        <img id="preview-img" src="" alt="Preview daging">
+                        <div class="preview-overlay">
+                            <button type="button" class="remove-btn" id="remove-btn" aria-label="Hapus gambar">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                    <path d="M18 6L6 18M6 6l12 12"/>
+                                </svg>
+                            </button>
+                            <p class="preview-label">Gambar dipilih</p>
+                        </div>
+                    </div>
+
+                    <input type="file" name="file" id="file-input" class="sr-only" accept="image/jpeg,image/png,image/jpg" required>
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="btn-primary" id="submit-btn" disabled>
+                    <span class="btn-text" id="btn-text">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                        </svg>
+                        Analisa Sekarang
+                    </span>
+                    <span class="btn-loading" id="btn-loading" style="display:none">
+                        <span class="spinner"></span>
+                        Memproses...
+                    </span>
+                </button>
+            </form>
+        </main>
+
+        <!-- Features row -->
+        <div class="features-row">
+            <div class="feature-chip">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                Deteksi Instan
+            </div>
+            <div class="feature-chip">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                AI Terpercaya
+            </div>
+            <div class="feature-chip">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                Hasil Real-time
+            </div>
+        </div>
+
+        <footer class="page-footer">Dibuat dengan ❤️ untuk keamanan pangan Indonesia</footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

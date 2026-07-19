@@ -1,0 +1,11 @@
+# Mengabaikan folder virtual environment
+env/
+venv/
+
+# Mengabaikan file sistem Python
+__pycache__/
+*.pyc
+
+# Mengabaikan dataset (SANGAT PENTING agar upload tidak error/lama)
+training/dataset_daging/
+training/dataset_daging_ringan/
